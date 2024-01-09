@@ -21,6 +21,8 @@ import { createRoot } from 'react-dom/client';
 
 function App() {
     const [players, setPlayers] = React.useState([]);
+    const [id, setId] = React.useState(window.location.hash.slice(1)*1);
+   
     // I think my code here is not displaying the number because of the players/puppies problem? 
     React.useEffect(function(){
        async function fetchPlayers(){
@@ -31,13 +33,41 @@ function App() {
             console.log(json);
         }   
         fetchPlayers ();
+        window.addEventListener('hashchange', function(){
+         setId(window.location.hash.slice(1)*1);
+     });
     }, []);
+    console.log(id);
+   
+let filtered = players;
+if(id){
+        filtered = players.filter (function(player){
+            return player.id === id;
+     });
+}
+
     return (
-        <div>
-        <h1>
-            Puppies { players.length } 
-        </h1>
-        </div>
+    <div>
+        <h1> Puppies { players.length } </h1>
+        <a href='#'> Reset </a>
+         <ul>
+            {
+                filtered.map(function(player){
+                    return (
+                        <li key={player.id}>
+                        <a href={`#${player.id}`}>
+                         {player.name}
+                         </a>
+                         <p>
+                            {player.status}
+                            {player.breed}
+                        </p>
+                        </li>
+                    )
+                })
+            }   
+         </ul>
+    </div>
     )
 }
  
