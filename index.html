@@ -20,16 +20,22 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 function App() {
-    const [puppies, setPuppies] = React.useState([]);
-    React.useEffect(function(){}, []);
-        function fetchPuppies(){
-            console.log('fetch puppies');
-        }
-        fetchPuppies ();
+    const [players, setPlayers] = React.useState([]);
+    // I think my code here is not displaying the number because of the players/puppies problem? 
+    React.useEffect(function(){
+       async function fetchPlayers(){
+            console.log('fetch players');
+            const response = await fetch ("https://fsa-puppy-bowl.herokuapp.com/api/2309-ftb-et-am/players ");
+            const json = await response.json();
+            setPlayers (json.data);
+            console.log(json);
+        }   
+        fetchPlayers ();
+    }, []);
     return (
         <div>
         <h1>
-            Puppies { puppies.length } 
+            Puppies { players.length } 
         </h1>
         </div>
     )
